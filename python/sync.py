@@ -33,10 +33,11 @@ class DirSynch(object):
         self.files = files
 
     def sync_dir(self, dir_name):
-        """Synch the directory.  Please note: if you are on a mac and the
-        remote is linux, if you use --delete to keep things
-        pedantically in synch, you will nuke your venv every single
-        time you save a file.
+        """Synch the directory.
+
+        Please note: I'm ignoring dir_name/.venv because that's
+        usually a mac locally and linux remotely in my case.
+
         """
         cmd = ['rsync', '-av', '--delete', '--exclude', '.venv', "{root}/{target_dir}".format(root=SOURCE_DIR,
                                                                         target_dir=dir_name),
