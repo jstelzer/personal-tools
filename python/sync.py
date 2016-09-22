@@ -51,8 +51,8 @@ class DirSynch(object):
         if len(self.files) > 0:
             changed_files = []
             for line in self.files:
-                # This file is updated every time you move around the dir in a shell.
-                if line.endswith(".git/index.lock"):
+                # Ignore changes in the .git dir. Only trigger rsync when live files change
+                if -1 != line.endswith(".git/"):
                     continue
                 # This subdir is bullshit.
                 if -1 != line.rfind("/.venv/"):
