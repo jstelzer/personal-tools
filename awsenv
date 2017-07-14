@@ -1,0 +1,33 @@
+#!/bin/bash
+##
+# Simple tool to manage where y  our credentials point
+# If you have bash completion setup, add this to your .bashrc
+########
+# function _awsenv() {
+#     local cur=${COMP_WORDS[COMP_CWORD]}
+#     CRED_FILES="$(for f in ~/.aws/*.txt ; do  basename $f; done )"
+#     COMPREPLY=( $( compgen -W "${CRED_FILES}" -- $cur))
+#     return 0
+# }
+# complete -F _awsenv awsenv
+########
+#
+#
+CREDS=$1
+if [ -z $CREDS ]; then
+    echo "Usage: $0 name-of-cred-file"
+    exit 1
+fi
+if [ ! -f ~/.aws/${CREDS} ]; then
+    echo "Cred file $CREDS is not in the right place or is missing"
+    exit 2
+fi
+if [ ! -d ~/.aws ]; then
+    mkdir -p ~/.aws
+fi
+
+echo "Setting creds ${CREDS} active"
+rm -f ~/.boto
+rm -f ~/.aws/credentials
+ln -s ~/.aws/${CREDS} ~/.boto
+ln -s ~/.aws/${CREDS} ~/.aws/credentials
